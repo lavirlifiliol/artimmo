@@ -1,4 +1,4 @@
-package artimmo.model.actions.internals
+package artimmo.model.actions.common
 
 import artimmo.model
 import zio.json.{JsonDecoder, JsonEncoder}

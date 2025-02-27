@@ -2,17 +2,19 @@ package artimmo
 
 import zio.*
 import zio.http.*
-
-import artimmo.model.actions._
+import artimmo.model.actions.*
 import artimmo.model.actions.given
 
-val TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkYW0uaHJiYWNAZ21haWwuY29tIiwicGFzc3dvcmRfY2hhbmdlZCI6IiJ9.O6YyhHvX0cDbg-Bf3FeEJ0Aj49e3RVbpOr8-2C7H80o"
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Files, Path}
+import scala.util.Try
 
 object MyApp extends ZIOAppDefault:
   val app =
     for {
       world <- ZIO.service[client.World]
-      account <- world.withAuth(TOKEN)
+      token <- ZIO.fromTry(Try(Files.readString(Path.of("token.txt"), StandardCharsets.US_ASCII).trim))
+      account <- world.withAuth(token)
       character = account.withCharacter("primus")
       _ <- (for {
         _ <- character.act(Rest) flatMap (f => Console.printLine(f.map(_.hpRestored)))

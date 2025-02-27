@@ -2,13 +2,10 @@ package artimmo.client
 
 import artimmo.knowledge.Knowledge
 import zio.*
-import zio.http.{Body, Client, Request, ZClientAspect}
-import zio.json.{JsonDecoder, JsonEncoder}
-import zio.json.ast.{Json, JsonCursor}
+import zio.http.{Body, Client}
+import zio.json.JsonDecoder
 import artimmo.model
-import artimmo.model.actions.internals.{Action, ReqEncoder, Response, given}
-
-import java.time.Instant
+import artimmo.model.actions.common.{Action, Response}
 
 trait World {
   protected val host = "api.artifactsmmo.com"

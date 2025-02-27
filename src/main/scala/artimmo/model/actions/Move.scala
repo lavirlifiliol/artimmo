@@ -1,7 +1,7 @@
 package artimmo.model.actions
 
 import artimmo.*
-import artimmo.model.actions.internals.{Action, JsonReq, ReqEncoder, Response}
+import artimmo.model.actions.common.{Action, JsonReq, ReqEncoder, Response}
 import zio.json.*
 
 case class Move(x: Long, y: Long)

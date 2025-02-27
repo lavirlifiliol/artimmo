@@ -1,7 +1,7 @@
 package artimmo.model.actions
 
 import artimmo.model
-import artimmo.model.actions.internals.{Action, ReqEncoder, Response}
+import artimmo.model.actions.common.{Action, ReqEncoder, Response}
 import zio.json._
 
 object Fight {

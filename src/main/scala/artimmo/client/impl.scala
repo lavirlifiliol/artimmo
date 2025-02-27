@@ -1,7 +1,7 @@
 package artimmo.client
 
 import artimmo.knowledge.Knowledge
-import artimmo.model.actions.internals.{Action, Response}
+import artimmo.model.actions.common.{Action, Response}
 import artimmo.model
 import zio.*
 import zio.http.{Body, Client, Request, ZClientAspect}
@@ -26,7 +26,7 @@ final class WorldLive(clientIn: Client) extends World {
       resp <- nclient.batched(req)
       resp <- resp.body.asString
       chars <- resp.fromJson[UnData[Seq[model.Character]]] match
-        case Left(value) => ZIO.fail(Exception(s"couldn't get characters -- $value"))
+        case Left(value) => ZIO.fail(Exception(s"couldn't get characters -- $value <== $resp"))
         case Right(value) => ZIO.succeed(value.data)
       ref <- Ref.make(Knowledge(Map.from(chars.map(c => c.information.name -> c))))
     } yield AccountLive(nclient, ref)

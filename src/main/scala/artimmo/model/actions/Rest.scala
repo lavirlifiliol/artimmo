@@ -5,7 +5,8 @@ import artimmo.model.actions.common.{Action, ReqEncoder, Response}
 import zio.json._
 
 object Rest {
-  case class Resp(cooldown: model.Cooldown, @jsonField("hp_restored") hpRestored: Long, character: model.Character) extends Response
+  case class Resp(cooldown: model.Cooldown, @jsonField("hp_restored") hpRestored: Long, character: model.Character)
+      extends Response
 }
 
 given restAction: Action[Rest.type, Rest.Resp] with {

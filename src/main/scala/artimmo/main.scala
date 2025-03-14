@@ -22,6 +22,6 @@ object MyApp extends ZIOAppDefault:
       } yield ()) repeat Schedule.forever
     } yield ()
 
-  def run = app.provide(Client.default, client.World.live)
+  def run: ZIO[Any, Throwable, Unit] = app.provide(Client.default, client.World.live)
 
 //

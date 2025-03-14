@@ -1,6 +1,6 @@
 package artimmo.client
 
-import artimmo.knowledge.Knowledge
+import artimmo.game.Knowledge
 import zio.*
 import zio.http.{Body, Client}
 import zio.json.JsonDecoder
@@ -9,7 +9,6 @@ import artimmo.model.actions.common.{Action, Response}
 
 trait World {
   protected val host = "api.artifactsmmo.com"
-
 
   // TODO not this
   def get[T](path: String, params: Map[String, String])(implicit t: JsonDecoder[T]): Task[T]

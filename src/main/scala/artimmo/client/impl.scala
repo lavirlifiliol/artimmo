@@ -1,6 +1,6 @@
 package artimmo.client
 
-import artimmo.knowledge.Knowledge
+import artimmo.game.Knowledge
 import artimmo.model.actions.common.{Action, Response}
 import artimmo.model
 import zio.*
@@ -26,9 +26,9 @@ final class WorldLive(clientIn: Client) extends World {
       resp <- nclient.batched(req)
       resp <- resp.body.asString
       chars <- resp.fromJson[UnData[Seq[model.Character]]] match
-        case Left(value) => ZIO.fail(Exception(s"couldn't get characters -- $value <== $resp"))
+        case Left(value)  => ZIO.fail(Exception(s"couldn't get characters -- $value <== $resp"))
         case Right(value) => ZIO.succeed(value.data)
-      ref <- Ref.make(Knowledge(Map.from(chars.map(c => c.information.name -> c))))
+      ref <- Ref.make(Knowledge(???, Map.from(chars.map(c => c.information.name -> c))))
     } yield AccountLive(nclient, ref)
 }
 
@@ -56,13 +56,13 @@ final class CharacterLive(val client: Client, val charName: String, val knowledg
       known <- knowledge.get
       tts <- known.chars.get(charName) match
         case Some(value) => ZIO.succeed(now.until(value.cooldown.expires, ChronoUnit.NANOS))
-        case None => ZIO.fail(Exception("Character doesn't exist"))
+        case None        => ZIO.fail(Exception("Character doesn't exist"))
       _ <- if (tts > 0) ZIO.sleep(tts.nanos) else ZIO.succeed(())
       resp <- client.batched(req)
       str <- resp.body.asString
       resp = (unData mapOrFail endpoint.decoder.fromJsonAST).decodeJson(str)
       _ <- resp match
-        case Left(value) => ZIO.succeed(())
+        case Left(value)  => ZIO.succeed(())
         case Right(value) => knowledge.update(k => k.copy(chars = k.chars + (charName -> value.character)))
       // TODO not this
     } yield resp.left.map(e => s"$e <=== $str")

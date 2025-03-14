@@ -6,19 +6,18 @@ import zio.json.*
 
 case class Move(x: Long, y: Long)
 
-
 object Move {
   case class Content(@jsonField("type") kind: String, code: String) // TODO type safety
 
   given JsonDecoder[Content] = DeriveJsonDecoder.gen[Content]
 
   case class Map(
-                  name: String,
-                  skin: String,
-                  x: Long,
-                  y: Long,
-                  content: Option[Content]
-                )
+      name: String,
+      skin: String,
+      x: Long,
+      y: Long,
+      content: Option[Content]
+  )
 
   given JsonDecoder[Map] = DeriveJsonDecoder.gen[Map]
 
